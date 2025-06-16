@@ -10,6 +10,7 @@ const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const eventRoutes = require('./routes/eventRoutes');
 const alumniRoutes = require('./routes/alumniRoutes');
+const jobRoutes = require('./routes/jobRoutes');
 
 // Import middleware
 const logger = require('./middleware/logger');
@@ -24,8 +25,8 @@ app.use(cors({
   origin: process.env.CLIENT_URL || 'http://localhost:5173',
   credentials: true
 }));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
 // Health check endpoint
@@ -33,7 +34,8 @@ app.get('/health', (req, res) => {
   res.status(200).json({
     status: 'OK',
     message: 'Namal Alumni Network Backend is running',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    version: '1.0.0'
   });
 });
 
@@ -42,6 +44,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/alumni', alumniRoutes);
+app.use('/api/jobs', jobRoutes);
 
 // 404 handler
 app.use('*', (req, res) => {
@@ -64,6 +67,15 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/namal-alu
     console.error('MongoDB connection error:', err);
     process.exit(1);
   });
+
+// Graceful shutdown
+process.on('SIGTERM', () => {
+  console.log('SIGTERM received. Shutting down gracefully...');
+  mongoose.connection.close(() => {
+    console.log('MongoDB connection closed.');
+    process.exit(0);
+  });
+});
 
 // Start server
 app.listen(PORT, () => {
