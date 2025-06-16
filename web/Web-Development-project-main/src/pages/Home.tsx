@@ -2,7 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Calendar, Users, Award, BookOpen, Briefcase, Heart } from 'lucide-react';
 
-const Home = () => {
+interface HomeProps {
+  onRegister: () => void;
+}
+
+const Home: React.FC<HomeProps> = ({ onRegister }) => {
   return (
     <div>
       {/* Hero Section */}
@@ -13,9 +17,12 @@ const Home = () => {
             <h1 className="text-4xl md:text-5xl font-bold mb-6">Welcome to the Namal Alumni Network</h1>
             <p className="text-xl mb-8">Connecting graduates, fostering relationships, and building a stronger community.</p>
             <div className="flex flex-wrap gap-4">
-              <Link to="/membership" className="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-green-900 font-bold rounded-md transition-colors">
+              <button 
+                onClick={onRegister}
+                className="px-6 py-3 bg-yellow-500 hover:bg-yellow-600 text-green-900 font-bold rounded-md transition-colors"
+              >
                 Join the Network
-              </Link>
+              </button>
               <Link to="/events" className="px-6 py-3 bg-transparent hover:bg-green-700 border-2 border-yellow-400 text-yellow-400 font-bold rounded-md transition-colors">
                 Upcoming Events
               </Link>
@@ -183,7 +190,7 @@ const Home = () => {
                 <h3 className="text-xl font-bold text-green-800 mb-2">Annual Alumni Reunion</h3>
                 <p className="text-gray-500 mb-3">Namal University Campus, Mianwali</p>
                 <p className="text-gray-600 mb-4">Join us for a day of networking, reminiscing, and celebrating our alma mater.</p>
-                <a href="#" className="text-green-800 font-semibold hover:text-green-700">Register Now →</a>
+                <Link to="/events" className="text-green-800 font-semibold hover:text-green-700">Register Now →</Link>
               </div>
             </div>
             
@@ -196,7 +203,7 @@ const Home = () => {
                 <h3 className="text-xl font-bold text-green-800 mb-2">Career Development Workshop</h3>
                 <p className="text-gray-500 mb-3">Virtual Event</p>
                 <p className="text-gray-600 mb-4">Enhance your professional skills with our expert-led workshop on leadership.</p>
-                <a href="#" className="text-green-800 font-semibold hover:text-green-700">Register Now →</a>
+                <Link to="/events" className="text-green-800 font-semibold hover:text-green-700">Register Now →</Link>
               </div>
             </div>
             
@@ -209,7 +216,7 @@ const Home = () => {
                 <h3 className="text-xl font-bold text-green-800 mb-2">Networking Dinner</h3>
                 <p className="text-gray-500 mb-3">Pearl Continental Hotel, Lahore</p>
                 <p className="text-gray-600 mb-4">Connect with alumni in your industry at our exclusive networking dinner.</p>
-                <a href="#" className="text-green-800 font-semibold hover:text-green-700">Register Now →</a>
+                <Link to="/events" className="text-green-800 font-semibold hover:text-green-700">Register Now →</Link>
               </div>
             </div>
           </div>
